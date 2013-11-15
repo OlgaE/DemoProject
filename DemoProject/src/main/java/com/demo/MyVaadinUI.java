@@ -41,11 +41,10 @@ public class MyVaadinUI extends UI
         //
         // Add the main view of the application
         //
-        getNavigator().addView(MainView.NAME,
-                MainView.class);
+        getNavigator().addView(MainView.NAME, MainView.class);
         
-        //
         getNavigator().addView(DataSaveView.NAME, DataSaveView.class);
+        
                        
         //
         // We use a view change handler to ensure the user is always redirected
@@ -82,7 +81,7 @@ public class MyVaadinUI extends UI
             }
         });
         
-        MainUser userObject = new MainUser();
-        userObject.init();
+        //MainUser userObject = new MainUser();
+        //userObject.init();
     }
 }

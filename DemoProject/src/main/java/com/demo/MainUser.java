@@ -14,7 +14,7 @@ public class MainUser
       UserService userManager = (UserService) ctx.getBean("userServiceImpl");
       
       User user = new User();
-      user.setUsername("johndoe");
+      user.setSurname("johndoe");
       user.setName("John Doe");
       
       userManager.insertUser(user);
@@ -25,14 +25,14 @@ public class MainUser
       
       System.out.println("\nUser fetched by username!"
         + "\nId: " + user.getId()
-        + "\nUsername: " + user.getUsername()
+        + "\nUsername: " + user.getSurname()
         + "\nName: " + user.getName());
       
       user = userManager.getUserById(user.getId());
       
       System.out.println("\nUser fetched by ID!"
         + "\nId: " + user.getId()
-        + "\nUsername: " + user.getUsername()
+        + "\nUsername: " + user.getSurname()
         + "\nName: " + user.getName());
       
  /*     List<User> users = userManager.getUsers();

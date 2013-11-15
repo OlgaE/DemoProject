@@ -16,6 +16,7 @@
 
 	<aop:aspectj-autoproxy />
 	<tx:annotation-driven />
+	<context:annotation-config />
 
 	<context:component-scan base-package="com.demo.user.dao.impl" />
 	<context:component-scan base-package="com.demo.user.service.impl" />
@@ -47,4 +48,5 @@
 
 	<!-- <bean name="userManagerImpl" class="com.tx.user.impl.UserManagerImpl"
 		autowire="byName" />  -->
+	<bean name="user" class="com.demo.user.User" />
 </beans>

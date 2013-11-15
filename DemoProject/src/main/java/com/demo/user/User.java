@@ -17,7 +17,7 @@ public class User {
   private int id;
   
   @Column(name="USERNAME", nullable = false)
-  private String username;
+  private String surname;
   
   @Column(name="NAME", nullable = false)
   private String name;
@@ -30,12 +30,12 @@ public class User {
     this.id = id;
   }
 
-  public String getUsername() {
-    return username;
+  public String getSurname() {
+    return surname;
   }
   
-  public void setUsername(String username) {
-    this.username = username;
+  public void setSurname(String username) {
+    this.surname = username;
   }
   
   public String getName() {
