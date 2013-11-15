@@ -52,6 +52,7 @@ public class MyVaadinUI extends UI
         // to the login view if the user is not logged in.
         //
         getNavigator().addViewChangeListener(new ViewChangeListener() {
+
             
             @Override
             public boolean beforeViewChange(ViewChangeEvent event) {
@@ -80,5 +81,8 @@ public class MyVaadinUI extends UI
                 
             }
         });
+        
+        MainUser userObject = new MainUser();
+        userObject.init();
     }
 }
