@@ -37,6 +37,7 @@ public class TopRightView extends CustomComponent {
 		vLayout = new VerticalLayout();
 		
 		findUserLabel = new Label("Enter login name to find a user:");
+		findUserLabel.setStyleName("textstyle");
 		vLayout.addComponent(findUserLabel);
 		findUserTextField = new TextField();
 		vLayout.addComponent(findUserTextField);

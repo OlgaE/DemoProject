@@ -54,7 +54,7 @@ public class TopLeftView extends CustomComponent {
 		
 		// Welcome message:
 		welcomeLabel = new Label("New User Registration:");
-		//welcomeLabel.setStyleName("welcomestyle");
+		welcomeLabel.setStyleName("welcomestyle");
 		vLayout.addComponent(welcomeLabel);
 		
 		loginLabel = new Label("Login:");

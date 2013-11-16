@@ -34,9 +34,10 @@ public class DataSaveView extends CustomComponent implements View {
 	private String userSurname;
 	private String nameToFind;
 
-	// @Autowired
-	// @Qualifier("user")
-	private User user = new User();
+	//@Autowired
+	//@Qualifier("user")
+	//private User user;
+	User user = new User();
 	
 	public DataSaveView() {
 		setSizeFull();
