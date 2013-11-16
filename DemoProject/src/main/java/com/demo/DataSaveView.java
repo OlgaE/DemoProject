@@ -52,7 +52,7 @@ public class DataSaveView extends CustomComponent implements View {
 	Button backToMenuButton = new Button("Main Menu");
 	Button logoutButton = new Button("Logout");
 	
-	Label findUserLabel = new Label("Enter login to find a user:");
+	Label findUserLabel = new Label("Enter login name to find a user:");
 	TextField findUserTextField = new TextField();
 	Button findUserButton = new Button("Find");
 	Label showUserLabel = new Label();
@@ -143,6 +143,7 @@ public class DataSaveView extends CustomComponent implements View {
 				nameToFind = findUserTextField.getValue();
 			}
 		});
+		findUserTextField.setImmediate(true);
 		
 		saveButton.addClickListener(new Button.ClickListener() {
 
@@ -185,10 +186,11 @@ public class DataSaveView extends CustomComponent implements View {
 			public void buttonClick(ClickEvent event) {
 				
 				User foundUser = userManager.getUser(nameToFind);
-				showUserLabel.setCaption(foundUser.getName() + " "
-						+ foundUser.getSurname());
-				System.out.println("You entered (" + userSurname + "): "
-						+ foundUser.getName() + " " + foundUser.getSurname());
+				if(foundUser != null){
+					showUserLabel.setCaption(foundUser.getName() + " " + foundUser.getSurname());
+				} else {
+					showUserLabel.setCaption("User not found.");
+				}
 			}
 		});
 	}

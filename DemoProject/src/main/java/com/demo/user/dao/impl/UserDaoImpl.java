@@ -1,5 +1,6 @@
 package com.demo.user.dao.impl;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,15 @@ public class UserDaoImpl implements UserDao {
 	public User getUser(String loginName) {
 		Query query = sessionFactory.getCurrentSession().createQuery("from User where login = :loginName");
 		query.setParameter("loginName", loginName);
-		return (User) query.list().get(0);
+		
+		User foundUser = null;
+		try {
+			foundUser = (User) query.list().get(0);
+		} catch (Exception e) {
+			System.err.println("User not found.");
+		}
+		
+		return foundUser;
 	}
 
 /*	public List<User> getUsers() {
