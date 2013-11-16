@@ -25,8 +25,8 @@ public class UserServiceImpl implements UserService {
   }
   
  @Transactional
-  public User getUser(String username) {
-    return userDAO.getUser(username);
+  public User getUser(String loginName) {
+    return userDAO.getUser(loginName);
   }
 
   /* @Transactional

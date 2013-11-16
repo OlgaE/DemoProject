@@ -22,9 +22,9 @@ public class UserDaoImpl implements UserDao {
 		return (User) sessionFactory.getCurrentSession().get(User.class, userId);
 	}
 
-	public User getUser(String username) {
-		Query query = sessionFactory.getCurrentSession().createQuery("from User where username = :username");
-		query.setParameter("username", username);
+	public User getUser(String loginName) {
+		Query query = sessionFactory.getCurrentSession().createQuery("from User where login = :loginName");
+		query.setParameter("loginName", loginName);
 		return (User) query.list().get(0);
 	}
 

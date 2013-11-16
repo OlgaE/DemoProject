@@ -25,126 +25,171 @@ import com.vaadin.ui.VerticalSplitPanel;
 @SuppressWarnings("serial")
 public class DataSaveView extends CustomComponent implements View {
 
-    public static final String NAME = "datasaving";
-    private String userName;
-    private String userSurname;
-    
-    //@Autowired
-    //@Qualifier("user")
-    private User user = new User();
-    
-    Label welcomeMessage = new Label();
-    Label nameLabel = new Label("Name:");
-    Label surnameLabel = new Label("Surname:");
-    TextField nameField = new TextField();
-    TextField surnameField = new TextField();
-    Button saveButton = new Button("Save");   
-    Button backToMenuButton = new Button("Main Menu");
-    Button logoutButton = new Button("Logout");
-    Button showDbButton = new Button("Show database entry:");
-    Label showDbLabel = new Label();
+	public static final String NAME = "datasaving";
+	private String userName;
+	private String userSurname;
+	private String nameToFind;
+	private String loginName;
 
-    public DataSaveView() {
-    	setSizeFull();
-    	
-    	ApplicationContext ctx = new ClassPathXmlApplicationContext("spring.xml");
-        final UserService userManager = (UserService) ctx.getBean("userServiceImpl");
-    	
-        VerticalSplitPanel vPanel = new VerticalSplitPanel();
-        setCompositionRoot(vPanel);
+	static ApplicationContext context;
+	static UserService userManager;
+
+	// @Autowired
+	// @Qualifier("user")
+	private User user = new User();
+
+	Label welcomeMessage = new Label();
+	Label loginLabel = new Label("Login:");
+	Label nameLabel = new Label("Name:");
+	Label surnameLabel = new Label("Surname:");
+	Label registrationOk = new Label();
+	
+	TextField loginField = new TextField();
+	TextField nameField = new TextField();
+	TextField surnameField = new TextField();
+	
+	Button saveButton = new Button("Save");
+	Button backToMenuButton = new Button("Main Menu");
+	Button logoutButton = new Button("Logout");
+	
+	Label findUserLabel = new Label("Enter login to find a user:");
+	TextField findUserTextField = new TextField();
+	Button findUserButton = new Button("Find");
+	Label showUserLabel = new Label();
+
+	static {
+		context = new ClassPathXmlApplicationContext("spring.xml");
+		userManager = (UserService) context.getBean("userServiceImpl");
+	}
+
+	public DataSaveView() {
+		setSizeFull();
+
+		VerticalSplitPanel vPanel = new VerticalSplitPanel();
+		setCompositionRoot(vPanel);
 		vPanel.setSplitPosition(60);
 		vPanel.setStyleName(Reindeer.LAYOUT_BLUE);
-        
+
 		HorizontalSplitPanel hPanel = new HorizontalSplitPanel();
 		vPanel.addComponent(hPanel);
-		
-    	final VerticalLayout vLayoutTopLeft = new VerticalLayout();
-    	final VerticalLayout vLayoutTopRight = new VerticalLayout();
-    	final VerticalLayout vLayoutBottom = new VerticalLayout();
-    	
-    	vLayoutTopLeft.addComponent(welcomeMessage);
-    	vLayoutTopLeft.addComponent(nameLabel);
-    	vLayoutTopLeft.addComponent(nameField);
-    	vLayoutTopLeft.addComponent(surnameLabel);
-    	vLayoutTopLeft.addComponent(surnameField);
-    	vLayoutTopLeft.addComponent(saveButton);
-    	vLayoutTopRight.addComponent(showDbButton);
-    	vLayoutTopRight.addComponent(showDbLabel);
-    	vLayoutBottom.addComponent(backToMenuButton);
-    	vLayoutBottom.addComponent(logoutButton);
-    	
-    	hPanel.addComponent(vLayoutTopLeft);
-    	hPanel.addComponent(vLayoutTopRight);
-    	vPanel.addComponent(vLayoutBottom);
-    	
-    	nameField.addValueChangeListener(new Property.ValueChangeListener() {
-			
+
+		final VerticalLayout vLayoutTopLeft = new VerticalLayout();
+		final VerticalLayout vLayoutTopRight = new VerticalLayout();
+		final VerticalLayout vLayoutBottom = new VerticalLayout();
+
+		vLayoutTopLeft.addComponent(welcomeMessage);
+		vLayoutTopLeft.addComponent(loginLabel);
+		vLayoutTopLeft.addComponent(loginField);
+		vLayoutTopLeft.addComponent(nameLabel);
+		vLayoutTopLeft.addComponent(nameField);
+		vLayoutTopLeft.addComponent(surnameLabel);
+		vLayoutTopLeft.addComponent(surnameField);
+		vLayoutTopLeft.addComponent(saveButton);
+		vLayoutTopLeft.addComponent(registrationOk);
+
+		vLayoutTopRight.addComponent(findUserLabel);
+		vLayoutTopRight.addComponent(findUserTextField);
+		vLayoutTopRight.addComponent(findUserButton);
+		vLayoutTopRight.addComponent(showUserLabel);
+
+		vLayoutBottom.addComponent(backToMenuButton);
+		vLayoutBottom.addComponent(logoutButton);
+
+		hPanel.addComponent(vLayoutTopLeft);
+		hPanel.addComponent(vLayoutTopRight);
+		vPanel.addComponent(vLayoutBottom);
+
+	}
+
+	@Override
+	public void enter(ViewChangeEvent event) {
+
+		welcomeMessage.setValue("User registration:");
+
+		loginField.addValueChangeListener(new Property.ValueChangeListener() {
+
 			@Override
 			public void valueChange(ValueChangeEvent event) {
-				userName = nameField.getValue();
+				loginName = (String) loginField.getValue();
+				user.setLoginName(loginName);
+			}
+		});
+		loginField.setImmediate(true);
+		
+		nameField.addValueChangeListener(new Property.ValueChangeListener() {
+
+			@Override
+			public void valueChange(ValueChangeEvent event) {
+				userName = (String) nameField.getValue();
 				user.setName(userName);
 			}
 		});
-    	nameField.setImmediate(true);
-    	
-    	surnameField.addValueChangeListener(new Property.ValueChangeListener() {
-			
+		nameField.setImmediate(true);
+
+		surnameField.addValueChangeListener(new Property.ValueChangeListener() {
+
 			@Override
 			public void valueChange(ValueChangeEvent event) {
 				userSurname = surnameField.getValue();
 				user.setSurname(userSurname);
 			}
 		});
-    	surnameField.setImmediate(true);
-    	
-    	saveButton.addClickListener(new Button.ClickListener() {
+		surnameField.setImmediate(true);
+
+		findUserTextField.addValueChangeListener(new Property.ValueChangeListener() {
 			
 			@Override
-			public void buttonClick(ClickEvent event) {
-				
-				userManager.insertUser(user);
-				
-				nameField.setValue("");
-				surnameField.setValue("");
+			public void valueChange(ValueChangeEvent event) {
+				nameToFind = findUserTextField.getValue();
 			}
 		});
-    	
-    	backToMenuButton.addClickListener(new Button.ClickListener() {
-			
+		
+		saveButton.addClickListener(new Button.ClickListener() {
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+
+				userManager.insertUser(user);
+				loginField.setValue("");
+				nameField.setValue("");
+				surnameField.setValue("");
+				
+				registrationOk.setCaption("Registration success)");
+			}
+		});
+
+		backToMenuButton.addClickListener(new Button.ClickListener() {
+
 			@Override
 			public void buttonClick(ClickEvent event) {
 				getUI().getNavigator().navigateTo(MainView.NAME);
 			}
 		});
-    	
-    	logoutButton.addClickListener(new Button.ClickListener() {
-			
+
+		logoutButton.addClickListener(new Button.ClickListener() {
+
 			@Override
 			public void buttonClick(ClickEvent event) {
 
-	            // "Logout" the user
-	            getSession().setAttribute("user", null);
+				// "Logout" the user
+				getSession().setAttribute("user", null);
 
-	            // Refresh this view, should redirect to login view
-	            getUI().getNavigator().navigateTo("");
+				// Refresh this view, should redirect to login view
+				getUI().getNavigator().navigateTo("");
 			}
 		});
-    	
-    	showDbButton.addClickListener(new Button.ClickListener() {
-			
+
+		findUserButton.addClickListener(new Button.ClickListener() {
+
 			@Override
 			public void buttonClick(ClickEvent event) {
-				// !!!!
-				User dbUser = userManager.getUser(user.getSurname());
-				showDbLabel.setCaption(dbUser.getName() + " " + dbUser.getSurname());
-				System.out.println("You entered (" + userSurname + "): " + dbUser.getName() + " " + dbUser.getSurname());
+				
+				User foundUser = userManager.getUser(nameToFind);
+				showUserLabel.setCaption(foundUser.getName() + " "
+						+ foundUser.getSurname());
+				System.out.println("You entered (" + userSurname + "): "
+						+ foundUser.getName() + " " + foundUser.getSurname());
 			}
 		});
-    }
-
-    @Override
-    public void enter(ViewChangeEvent event) {
-    	
-        welcomeMessage.setValue("Type your name below:");
-    }
+	}
 }
