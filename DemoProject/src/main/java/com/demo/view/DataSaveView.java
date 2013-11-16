@@ -1,4 +1,4 @@
-package com.demo;
+package com.demo.view;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -7,9 +7,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.demo.user.User;
 import com.demo.user.service.UserService;
-import com.demo.view.BottomView;
-import com.demo.view.TopLeftView;
-import com.demo.view.TopRightView;
+import com.demo.view.save.BottomView;
+import com.demo.view.save.TopLeftView;
+import com.demo.view.save.TopRightView;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.navigator.View;

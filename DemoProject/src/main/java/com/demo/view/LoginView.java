@@ -1,4 +1,4 @@
-package com.demo;
+package com.demo.view;
 
 import com.vaadin.data.validator.AbstractValidator;
 import com.vaadin.data.validator.EmailValidator;

@@ -1,4 +1,4 @@
-package com.demo;
+package com.demo.view;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;

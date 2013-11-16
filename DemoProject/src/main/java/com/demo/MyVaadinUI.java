@@ -2,6 +2,9 @@ package com.demo;
 
 import javax.servlet.annotation.WebServlet;
 
+import com.demo.view.DataSaveView;
+import com.demo.view.LoginView;
+import com.demo.view.MainView;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.navigator.Navigator;
