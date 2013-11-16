@@ -7,9 +7,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.demo.user.User;
 import com.demo.user.service.UserService;
-import com.demo.view.save.BottomView;
-import com.demo.view.save.TopLeftView;
-import com.demo.view.save.TopRightView;
+import com.demo.view.datasaveview.BottomView;
+import com.demo.view.datasaveview.TopLeftView;
+import com.demo.view.datasaveview.TopRightView;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.navigator.View;
@@ -34,20 +34,15 @@ public class DataSaveView extends CustomComponent implements View {
 	private String userSurname;
 	private String nameToFind;
 
-	static ApplicationContext context;
-	static UserService userManager;
-
 	// @Autowired
 	// @Qualifier("user")
 	private User user = new User();
 	
-	static {
-		context = new ClassPathXmlApplicationContext("spring.xml");
-		userManager = (UserService) context.getBean("userServiceImpl");
-	}
-
 	public DataSaveView() {
 		setSizeFull();
+		
+		ApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
+		final UserService userManager = (UserService) context.getBean("userServiceImpl");
 
 		VerticalSplitPanel vPanel = new VerticalSplitPanel();
 		vPanel.setSplitPosition(60);
@@ -164,6 +159,6 @@ public class DataSaveView extends CustomComponent implements View {
 	@Override
 	public void enter(ViewChangeEvent event) {
 
-
+		// :)
 	}
 }
