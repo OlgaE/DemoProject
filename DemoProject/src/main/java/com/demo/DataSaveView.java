@@ -7,6 +7,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.demo.user.User;
 import com.demo.user.service.UserService;
+import com.demo.view.BottomView;
+import com.demo.view.TopLeftView;
+import com.demo.view.TopRightView;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.navigator.View;
@@ -26,10 +29,10 @@ import com.vaadin.ui.VerticalSplitPanel;
 public class DataSaveView extends CustomComponent implements View {
 
 	public static final String NAME = "datasaving";
+	private String loginName;
 	private String userName;
 	private String userSurname;
 	private String nameToFind;
-	private String loginName;
 
 	static ApplicationContext context;
 	static UserService userManager;
@@ -37,26 +40,7 @@ public class DataSaveView extends CustomComponent implements View {
 	// @Autowired
 	// @Qualifier("user")
 	private User user = new User();
-
-	Label welcomeMessage = new Label();
-	Label loginLabel = new Label("Login:");
-	Label nameLabel = new Label("Name:");
-	Label surnameLabel = new Label("Surname:");
-	Label registrationOk = new Label();
 	
-	TextField loginField = new TextField();
-	TextField nameField = new TextField();
-	TextField surnameField = new TextField();
-	
-	Button saveButton = new Button("Save");
-	Button backToMenuButton = new Button("Main Menu");
-	Button logoutButton = new Button("Logout");
-	
-	Label findUserLabel = new Label("Enter login name to find a user:");
-	TextField findUserTextField = new TextField();
-	Button findUserButton = new Button("Find");
-	Label showUserLabel = new Label();
-
 	static {
 		context = new ClassPathXmlApplicationContext("spring.xml");
 		userManager = (UserService) context.getBean("userServiceImpl");
@@ -66,48 +50,28 @@ public class DataSaveView extends CustomComponent implements View {
 		setSizeFull();
 
 		VerticalSplitPanel vPanel = new VerticalSplitPanel();
-		setCompositionRoot(vPanel);
 		vPanel.setSplitPosition(60);
 		vPanel.setStyleName(Reindeer.LAYOUT_BLUE);
+		setCompositionRoot(vPanel);
 
 		HorizontalSplitPanel hPanel = new HorizontalSplitPanel();
 		vPanel.addComponent(hPanel);
 
-		final VerticalLayout vLayoutTopLeft = new VerticalLayout();
-		final VerticalLayout vLayoutTopRight = new VerticalLayout();
-		final VerticalLayout vLayoutBottom = new VerticalLayout();
-
-		vLayoutTopLeft.addComponent(welcomeMessage);
-		vLayoutTopLeft.addComponent(loginLabel);
-		vLayoutTopLeft.addComponent(loginField);
-		vLayoutTopLeft.addComponent(nameLabel);
-		vLayoutTopLeft.addComponent(nameField);
-		vLayoutTopLeft.addComponent(surnameLabel);
-		vLayoutTopLeft.addComponent(surnameField);
-		vLayoutTopLeft.addComponent(saveButton);
-		vLayoutTopLeft.addComponent(registrationOk);
-
-		vLayoutTopRight.addComponent(findUserLabel);
-		vLayoutTopRight.addComponent(findUserTextField);
-		vLayoutTopRight.addComponent(findUserButton);
-		vLayoutTopRight.addComponent(showUserLabel);
-
-		vLayoutBottom.addComponent(backToMenuButton);
-		vLayoutBottom.addComponent(logoutButton);
+		TopLeftView topLeftView = new TopLeftView();
+		VerticalLayout vLayoutTopLeft = topLeftView.getLayout();
+		
+		TopRightView topRightView = new TopRightView();
+		VerticalLayout vLayoutTopRight = topRightView.getLayout();
+		
+		BottomView bottomView = new BottomView();
+		VerticalLayout vLayoutBottom = bottomView.getLayout();
 
 		hPanel.addComponent(vLayoutTopLeft);
 		hPanel.addComponent(vLayoutTopRight);
 		vPanel.addComponent(vLayoutBottom);
 
-	}
-
-	@Override
-	public void enter(ViewChangeEvent event) {
-
-		welcomeMessage.setValue("User registration:");
-
+		final TextField loginField = topLeftView.getLoginField();
 		loginField.addValueChangeListener(new Property.ValueChangeListener() {
-
 			@Override
 			public void valueChange(ValueChangeEvent event) {
 				loginName = (String) loginField.getValue();
@@ -116,8 +80,8 @@ public class DataSaveView extends CustomComponent implements View {
 		});
 		loginField.setImmediate(true);
 		
+		final TextField nameField = topLeftView.getNameField();
 		nameField.addValueChangeListener(new Property.ValueChangeListener() {
-
 			@Override
 			public void valueChange(ValueChangeEvent event) {
 				userName = (String) nameField.getValue();
@@ -126,8 +90,8 @@ public class DataSaveView extends CustomComponent implements View {
 		});
 		nameField.setImmediate(true);
 
+		final TextField surnameField = topLeftView.getSurnameField();
 		surnameField.addValueChangeListener(new Property.ValueChangeListener() {
-
 			@Override
 			public void valueChange(ValueChangeEvent event) {
 				userSurname = surnameField.getValue();
@@ -136,8 +100,8 @@ public class DataSaveView extends CustomComponent implements View {
 		});
 		surnameField.setImmediate(true);
 
+		final TextField findUserTextField = topRightView.getFindUserTextField();
 		findUserTextField.addValueChangeListener(new Property.ValueChangeListener() {
-			
 			@Override
 			public void valueChange(ValueChangeEvent event) {
 				nameToFind = findUserTextField.getValue();
@@ -145,8 +109,9 @@ public class DataSaveView extends CustomComponent implements View {
 		});
 		findUserTextField.setImmediate(true);
 		
+		final Button saveButton = topLeftView.getSaveButton();
+		final Label registrationOkLabel=topLeftView.getRegistrationOkLabel();
 		saveButton.addClickListener(new Button.ClickListener() {
-
 			@Override
 			public void buttonClick(ClickEvent event) {
 
@@ -155,20 +120,20 @@ public class DataSaveView extends CustomComponent implements View {
 				nameField.setValue("");
 				surnameField.setValue("");
 				
-				registrationOk.setCaption("Registration success)");
+				registrationOkLabel.setCaption("Registration success)");
 			}
 		});
 
+		final Button backToMenuButton = bottomView.getBackToMenuButton();
 		backToMenuButton.addClickListener(new Button.ClickListener() {
-
 			@Override
 			public void buttonClick(ClickEvent event) {
 				getUI().getNavigator().navigateTo(MainView.NAME);
 			}
 		});
 
+		final Button logoutButton = bottomView.getLogoutButton();
 		logoutButton.addClickListener(new Button.ClickListener() {
-
 			@Override
 			public void buttonClick(ClickEvent event) {
 
@@ -180,8 +145,9 @@ public class DataSaveView extends CustomComponent implements View {
 			}
 		});
 
+		final Button findUserButton = topRightView.getFindUserButton();
+		final Label showUserLabel = topRightView.getShowUserLabel();
 		findUserButton.addClickListener(new Button.ClickListener() {
-
 			@Override
 			public void buttonClick(ClickEvent event) {
 				
@@ -193,5 +159,11 @@ public class DataSaveView extends CustomComponent implements View {
 				}
 			}
 		});
+	}
+
+	@Override
+	public void enter(ViewChangeEvent event) {
+
+
 	}
 }
