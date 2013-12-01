@@ -20,7 +20,7 @@
 
 	<context:component-scan base-package="com.demo.user.dao.impl" />
 	<context:component-scan base-package="com.demo.user.service.impl" />
-	<context:component-scan base-package="com.demo.user" />
+	<!-- <context:component-scan base-package="com.demo.user" /> -->
 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
@@ -49,5 +49,5 @@
 
 	<!-- <bean name="userManagerImpl" class="com.tx.user.impl.UserManagerImpl"
 		autowire="byName" />  -->
-	<!-- <bean id="user" class="com.demo.user.User" />  -->
+	<bean id="user" class="com.demo.user.User" />
 </beans>
